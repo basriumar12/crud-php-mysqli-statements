@@ -14,51 +14,53 @@
       <div class="page-header">
         <h4>
           <i class="glyphicon glyphicon-edit"></i> 
-          Input data siswa
+          Ubah data siswa
         </h4>
       </div> <!-- /.page-header -->
       <?php
-      // sql statement untuk menampilkan data dari tabel is_siswa
-      $query = "SELECT * FROM is_siswa WHERE nis=?";
-      // membuat prepared statements
-      $stmt = mysqli_prepare($db, $query);
-      //cek query
-      if (!$stmt) {
-        die('Query Error: '.mysqli_errno($db).'-'.mysqli_error($db));
+      if (isset($_GET['id'])) {
+        // sql statement untuk menampilkan data dari tabel is_siswa
+        $query = "SELECT * FROM is_siswa WHERE nis=?";
+        // membuat prepared statements
+        $stmt = mysqli_prepare($db, $query);
+        //cek query
+        if (!$stmt) {
+          die('Query Error: '.mysqli_errno($db).'-'.mysqli_error($db));
+        }
+
+        // siapkan "data" query
+        $nis = $_GET['id'];
+
+        // hubungkan "data" dengan prepared statements
+        mysqli_stmt_bind_param($stmt, "s", $nis);
+
+        // jalan query: execute
+        mysqli_stmt_execute($stmt); 
+
+        // ambil hasil query
+        $result = mysqli_stmt_get_result($stmt);
+        // tampilkan hasil query
+        while ($data = mysqli_fetch_assoc($result)) {
+          $nis           = $data['nis'];
+          $nama          = $data['nama'];
+          $tempat_lahir  = $data['tempat_lahir'];
+          
+          $tanggal       = $data['tanggal_lahir'];
+          $tgl           = explode('-',$tanggal);
+          $tanggal_lahir = $tgl[2]."-".$tgl[1]."-".$tgl[0];
+          
+          $jenis_kelamin = $data['jenis_kelamin'];
+          $agama         = $data['agama'];
+          $alamat        = $data['alamat'];
+          $no_telepon    = $data['no_telepon'];
+        }
+
+        /* tutup statement */
+        mysqli_stmt_close($stmt);
+
+        /* tutup koneksi */
+        mysqli_close($db);
       }
-
-      // siapkan "data" query
-      $nis = $_GET['id'];
-
-      // hubungkan "data" dengan prepared statements
-      mysqli_stmt_bind_param($stmt, "s", $nis);
-
-      // jalan query: execute
-      mysqli_stmt_execute($stmt); 
-
-      // ambil hasil query
-      $result = mysqli_stmt_get_result($stmt);
-      // tampilkan hasil query
-      while ($data = mysqli_fetch_assoc($result)) {
-        $nis           = $data['nis'];
-        $nama          = $data['nama'];
-        $tempat_lahir  = $data['tempat_lahir'];
-        
-        $tanggal       = $data['tanggal_lahir'];
-        $tgl           = explode('-',$tanggal);
-        $tanggal_lahir = $tgl[2]."-".$tgl[1]."-".$tgl[0];
-        
-        $jenis_kelamin = $data['jenis_kelamin'];
-        $agama         = $data['agama'];
-        $alamat        = $data['alamat'];
-        $no_telepon    = $data['no_telepon'];
-      }
-
-      /* tutup statement */
-      mysqli_stmt_close($stmt);
-
-      /* tutup koneksi */
-      mysqli_close($db);
       ?>
       <div class="panel panel-default">
         <div class="panel-body">
