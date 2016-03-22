@@ -23,10 +23,10 @@ if (isset($_POST['simpan'])) {
 	// hubungkan "data" dengan prepared statements
 	mysqli_stmt_bind_param($stmt, "ssssssss", $nis, $nama, $tempat_lahir, $tanggal_lahir, $jenis_kelamin, $agama, $alamat, $no_telepon);
 
-	// siapkan "data" query
-	$nis           = mysqli_real_escape_string($db, trim($_POST['nis']));
-	$nama          = mysqli_real_escape_string($db, trim($_POST['nama']));
-	$tempat_lahir  = mysqli_real_escape_string($db, trim($_POST['tempat_lahir']));
+	// ambil data hasil submit dari form
+	$nis           = trim($_POST['nis']);
+	$nama          = trim($_POST['nama']);
+	$tempat_lahir  = trim($_POST['tempat_lahir']);
 
 	$tanggal       = $_POST['tanggal_lahir'];
 	$tgl           = explode('-',$tanggal);
@@ -34,7 +34,7 @@ if (isset($_POST['simpan'])) {
 
 	$jenis_kelamin = $_POST['jenis_kelamin'];
 	$agama         = $_POST['agama'];
-	$alamat        = mysqli_real_escape_string($db, trim($_POST['alamat']));
+	$alamat        = trim($_POST['alamat']);
 	$no_telepon    = $_POST['no_telepon'];
 
 	// jalan query: execute
